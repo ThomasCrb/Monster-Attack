@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Monster Slayer</title>
+    <script src="https://npmcdn.com/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="css/foundation.min.css" />
+    <link rel="stylesheet" href="css/app.css" />
+  </head>
+  <body>
+    <div id="app">
+      <section class="row">
+        <div class="small-6 columns">
+          <h1 class="text-center">VOUS</h1>
+          <div class="healthbar">
+            <div
+              class="healthbar text-center"
+              style="background-color: green; margin: 0; color: white;"
+              :style="{width: playerHealth + '%'}"
+            >
+              {{playerHealth}}
+            </div>
+          </div>
+          <div class="manabar">
+            <div
+              class="manabar text-center"
+              style="background-color: darkslateblue; margin: 0; color: white;"
+              :style="{width: playerMana + '%'}"
+            >
+              {{playerMana}}
+            </div>
+          </div>
+        </div>
+        <div class="small-6 columns">
+          <h1 class="text-center">LE MONSTRE</h1>
+          <div class="healthbar">
+            <div
+              class="healthbar text-center"
+              style="background-color: green; margin: 0; color: white;"
+              :style="{width: monsterHealth/10 + '%'}"
+            >
+              {{monsterHealth}}
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="row controls" v-if="!gameIsRunning">
+        <div class="small-12 columns">
+          <button id="start-game" @click="startGame">
+            Nouvelle partie
+          </button>
+        </div>
+      </section>
+      <section class="row controls" v-else>
+        <div class="small-12 columns">
+          <button id="attack" @click="attack" :disabled="playerMana < 10">
+            Attaque
+          </button>
+
+          <button
+            id="manaPotions"
+            @click="drinkMana"
+            :disabled="manaPotions <= 0"
+          >
+            Potions de mana({{manaPotions}})
+          </button>
+          <button id="heal" @click="heal" :disabled="playerMana < 10">
+            Soin
+          </button>
+          <button id="shield" @click="shield" :disabled="shieldUp == false">
+            Bouclier
+          </button>
+          <button id="give-up" @click="giveUp">Abandonner</button>
+        </div>
+      </section>
+      <section class="row log" v-if="turns.length > 0">
+        <div class="small-12 columns">
+          <ul>
+            <li
+              v-for="turn in turns"
+              :class="{'player-turn': turn.isPlayer, 'monster-turn': !turn.isPlayer}"
+            >
+              {{turn.text }}
+            </li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
